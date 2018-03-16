@@ -1,5 +1,7 @@
 **Fertigation system**
 
+![](https://user-images.githubusercontent.com/5481968/37509806-f1d6fb7e-2909-11e8-97c9-1d7156e249a0.jpg)
+
 **API:**
 
 You can monitor any aspect of the system with **GET** request:
