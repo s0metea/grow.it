@@ -19,4 +19,6 @@ class PHMeter:
             self.state = 1
         if self.state > 12:
             self.state = 12
+        self.state = round(self.state, 2)
+        print("Ph was changed to " + str(self.state))
         return self.state

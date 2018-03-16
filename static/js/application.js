@@ -18,12 +18,15 @@ $(document).ready(function() {
 
   // Increase (state=1) or decrease (state=0) ph to 0.1
   $('#inc_ph').click(function() {
-    $.post( control, { sensor: "ph", state: "1" }).done(function( data ) {
+    $.post( control, { sensor: "ph", state: "1" }).done(function(data) {
+        $('#ph_level').text(data["state"]);
     });
   });
 
   $('#dec_ph').click(function() {
-    $.post( control, { sensor: "ph", state: "0" }).done(function( data ) {
+    $.post( control, { sensor: "ph", state: "0" }).done(function(data) {
+        console.log(data);
+        $('#ph_level').text(data["state"]);
     });
   });
 });

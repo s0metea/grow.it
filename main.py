@@ -11,28 +11,36 @@ ph = PHMeter()
 water = Tank()
 acid = Tank()
 
+sensors_set = {
+        "mixer": mixer.set_state,
+        "tank": 1,
+        "ph": ph.change,
+    }
+
+sensors_get = {
+        "mixer": mixer.get_state,
+        "tank": 1,
+        "ph": ph.get_state,
+    }
+
+states = {
+        "1": 1,
+        "0": 0
+    }
 
 # Index route
 @app.route("/")
 def index():
-    # Read the value of the sensor
-    # value = raspi.read_sensor()
-    # Render the index.html template passing the value of the sensor
     return render_template('index.html', mixer_state=mixer.get_state(), ph_level=ph.get_state())
 
 # Get response handle:
 @app.route("/api/1/monitor", methods=['GET'])
 def monitor():
     sensor = request.args.get('sensor', None)
-    sensors = {
-      "mixer": mixer.get_state,
-      "tank": 1,
-      "ph": ph.get_state,
-    }
     return jsonify(
         timestamp=time.time(),
         sensor=sensor,
-        state=sensors[sensor]()
+        state=sensors_get[sensor]()
     )
 
 # Get response handle:
@@ -52,26 +60,29 @@ def monitor_all():
 # Change value by POST request.
 @app.route("/api/1/control", methods=['POST'])
 def control():
-    # Get the parameters:
+    # Get the data:
     sensor = request.form['sensor']
     state = request.form['state']
-    states = {
-        "1": 1,
-        "0": 0
-    }
-    sensors = {
-        "mixer": mixer.set_state,
-        "tank": 1,
-        "ph": ph.change,
-    }
-    sensors[sensor](states[state])
-    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+    sensors_set[sensor](states[state])
+    new_value = sensors_get[sensor]()
+    return jsonify({'success': True, 'sensor': sensor, 'state': new_value}), 200, {'ContentType': 'application/json'}
 
 # About route
 @app.route("/about")
 def about():
     # Render the about.html template
     return render_template('about.html')
+
+# Index route
+@app.route("/statistic")
+def statistic():
+    return jsonify({'Text': "Not ready yet"}), 200, {'ContentType': 'application/json'}
+
+# Index route
+@app.route("/secret")
+def secret():
+    return jsonify({'Text': "Go away! Nothing to do here."}), 200, {'ContentType': 'application/json'}
+
 
 # Starts the app listening to port 5000 with debug mode
 if __name__ == "__main__":

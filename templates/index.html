@@ -9,41 +9,44 @@
   <meta name="author" content="">
   <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js" integrity="sha384-SlE991lGASHoBfWbelyBPLsUlwY1GwNDJo3jSJO04KZ33K2bwfV9YBauFfnzvynJ" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <title>Fertigation system</title>
 </head>
 
 <body>
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">Fertigation system</a>
+      <a class="navbar-brand" href="/"><i class="fab fa-envira"></i></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
+            <a class="btn" href="/">Home<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/statistic">Statistic</a>
+            <a class="btn" href="/statistic">Statistic</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/about">About</a>
+            <a class="btn" href="/about">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled" href="/secret">Secret feature</a>
+            <a class="btn btn-link disabled" href="/secret">Secret feature</a>
           </li>
         </ul>
       </div>
     </nav>
 
-    <div class="jumbotron" style="text-align: center;">
-      <h1>Welcome back!</h1>
-      <p class="lead">Here will be described the API</p>
+    <div class="jumbotron" style="text-align: center; background-image: url({{ url_for('static', filename='images/bg.jpg') }})">
+        <div class="post-content">
+          <h1>Fertigation system</h1>
+          <p class="lead">You can made it even at home</p>
+        </div>
     </div>
 
-    <div class="row">
-        <div class="col">
+    <div class="row justify-content-md-center" style="align-content: center">
+        <div class="col col-md text-center">
             <h4>Control water level:</h4>
             <p>{{ water_level }}</p>
             <p>
@@ -52,40 +55,39 @@
             </p>
         </div>
 
-        <div class="col">
-            <h4>Mixer control:</h4>
-                <div class="btn-outline-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-outline-success {% if mixer_state %}active{% endif %}">
-                        <input type="radio" name="options" id="mixer_on" autocomplete="off" {% if mixer_state %}checked{% endif %}> Turn on the mixer
-                    </label>
-                    <label class="btn btn-outline-danger {% if not mixer_state %}active{% endif %}">
-                        <input type="radio" name="options" id="mixer_off" autocomplete="off" {% if not mixer_state %}checked{% endif %}> Turn off the mixer
-                    </label>
-                </div>
+        <div class="col col-md text-center">
+            <h4>Change PH</h4>
+            <button type="button" id="dec_ph" class="btn btn-outline-danger"><i class="fas fa-minus"></i></button>
+            <span class="label label-default" id="ph_level">{{ ph_level }}</span>
+            <button type="button" id="inc_ph" class="btn btn-outline-success"><i class="fas fa-plus"></i></button>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col">
-            <h4>Change PH</h4>
-            <p>
-              <button type="button" id="dec_ph" class="btn btn-outline-danger"><i class="fas fa-minus"></i></button>
-              {{ ph_level }}
-              <button type="button" id="inc_ph" class="btn btn-outline-success"><i class="fas fa-plus"></i></button>
+    <div class="row justify-content-md-center">
+        <div class="col col-md text-center">
+            <h4>Mixer control:</h4>
+            <p class="btn-outline-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-outline-success {% if mixer_state %}active{% endif %}">
+                    <input type="radio" name="options" id="mixer_on" autocomplete="off" {% if mixer_state %}checked{% endif %}> Turn on the mixer
+                </label>
+                <label class="btn btn-outline-danger {% if not mixer_state %}active{% endif %}">
+                    <input type="radio" name="options" id="mixer_off" autocomplete="off" {% if not mixer_state %}checked{% endif %}> Turn off the mixer
+                </label>
             </p>
         </div>
 
-        <div class="col">
-            <h4>Main power supply</h4>
+        <div class="col col-md text-center">
+            <h4>Power supply</h4>
             <p>{{ system_status }}</p>
             <p>
                 <button type="button" id="sys_on" class="btn btn-outline-success">Turn off</button>
                 <button type="button" id="sys_off" class="btn btn-outline-danger">Turn on</button>
             </p>
         </div>
-      </div>
-    <footer class="footer">
-      <div style="text-align: center;">2018</div>
+    </div>
+
+    <footer class="footer fixed-bottom">
+      <div style="text-align: center; margin-bottom: 15px">2018</div>
     </footer>
   </div>
   <!-- /container -->
