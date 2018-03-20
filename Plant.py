@@ -2,18 +2,20 @@ class Plant:
     def __init__(self, strain, ph):
         self.strain = strain
         self.ph = ph
+        self.ph_variance = 1
         return
 
-    # Get the pump state
     def get_ph(self):
         return self.ph
 
     def get_strain(self):
         return self.strain
 
-    # Get the pump state
     def set_ph(self, ph):
-        self.ph += float(ph)
+        if int(ph):
+            self.ph += 0.1
+        else:
+            self.ph -= 0.1
         if self.ph < 0:
             self.ph = 0
         if self.ph > 12:

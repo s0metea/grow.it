@@ -22,6 +22,6 @@ class PHMeter:
     def start_measurement(self):
         print("PH level measurement was started!")
         time.sleep(5)
-        self.state = random()
+        self.state = round(self.state + random(), 2)
         print("PH level is: {}".format(self.state))
         return

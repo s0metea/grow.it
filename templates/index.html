@@ -10,7 +10,7 @@
   <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
   <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js" integrity="sha384-SlE991lGASHoBfWbelyBPLsUlwY1GwNDJo3jSJO04KZ33K2bwfV9YBauFfnzvynJ" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  <title>Fertigation system</title>
+  <title>Dashboard — grow.it</title>
 </head>
 
 <body>
@@ -40,58 +40,56 @@
 
     <div class="jumbotron" style="text-align: center; background-image: url({{ url_for('static', filename='images/bg.jpg') }})">
         <div class="post-content">
-          <h1>Fertigation system</h1>
-          <p class="lead">You can made it even at home</p>
+          <h1>grow.it</h1>
+          <p class="lead">Smart fertigation system</p>
         </div>
     </div>
 
-    <div class="row justify-content-md-center" style="align-content: center">
-        <div class="col col-md-12 text-center">
-            <h3><span class="label label-default" id="plant">{{ plant }}</span></h3>
-        </div>
-    </div>
+{#    <div class="row justify-content-md-center" style="align-content: center">#}
+{#        <div class="col col-md-12 text-center">#}
+{#            <h3><span class="label label-default" id="plant">{{ plant }}</span></h3>#}
+{#        </div>#}
+{#    </div>#}
 
     <div class="row justify-content-md-center" style="align-content: center">
         <div class="col col-md text-center">
             <h4>Main tank</h4>
-            <p>{{ water_level }}</p>
-            <p>
-                <button type="button" id="fill" class="btn btn-outline-success">Fill the tank</button>
-                <button type="button" id="pour_off" class="btn btn-outline-danger">Clear the tank</button>
+            <p>Current PH: <label id="current_ph">{{ current_ph }}</label></p>
+            <p>Water level: <label id="water_level">{{ water_level }}</label></p>
+            <button type="button" id="pour_off" class="btn btn-outline-danger">Clear the tank</button>
+        </div>
+
+        <div class="col col-md text-center">
+            <h4>Smart mode</h4>
+            <p class="btn-outline-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-outline-success {% if fertigator_state %}active{% endif %}">
+                    <i class="fab fa-envira"></i>
+                    <input type="radio" name="options" id="sys_on" autocomplete="off" {% if fertigator_state %}checked{% endif %}>
+                </label>
+                <label class="btn btn-outline-danger {% if not fertigator_state %}active{% endif %}">
+                    <i class="fas fa-power-off"></i>
+                    <input type="radio" name="options" id="sys_off" autocomplete="off" {% if not fertigator_state %}checked{% endif %}>
+                </label>
             </p>
-        </div>
-
-        <div class="col col-md text-center">
-            <h3>Change PH</h3>
-            <button type="button" id="dec_ph" class="btn btn-outline-danger"><i class="fas fa-minus"></i></button>
-            <span class="label label-default" id="plant_ph">{{ plant_ph }}</span>
-            <button type="button" id="inc_ph" class="btn btn-outline-success"><i class="fas fa-plus"></i></button>
-        </div>
-    </div>
-
-    <div class="row justify-content-md-center">
-        <div class="col col-md text-center">
+            <div class="col col-md text-center">
             <h4>Mixer control</h4>
             <p class="btn-outline-group btn-group-toggle" data-toggle="buttons">
                 <label class="btn btn-outline-success {% if mixer_state %}active{% endif %}">
-                    <input type="radio" name="options" id="mixer_on" autocomplete="off" {% if mixer_state %}checked{% endif %}> Turn on the mixer
+                    <i class="fas fa-sync-alt"></i>
+                    <input type="radio" name="options" id="mixer_on" autocomplete="off" {% if mixer_state %}checked{% endif %}>
                 </label>
                 <label class="btn btn-outline-danger {% if not mixer_state %}active{% endif %}">
-                    <input type="radio" name="options" id="mixer_off" autocomplete="off" {% if not mixer_state %}checked{% endif %}> Turn off the mixer
+                    <i class="fas fa-power-off"></i>
+                    <input type="radio" name="options" id="mixer_off" autocomplete="off" {% if not mixer_state %}checked{% endif %}>
                 </label>
             </p>
         </div>
-
+        </div>
         <div class="col col-md text-center">
-            <h4>Power supply</h4>
-            <p class="btn-outline-group btn-group-toggle" data-toggle="buttons">
-                <label class="btn btn-outline-success {% if fertigator_state %}active{% endif %}">
-                    <input type="radio" name="options" id="sys_on" autocomplete="off" {% if fertigator_state %}checked{% endif %}> Turn on
-                </label>
-                <label class="btn btn-outline-danger {% if not fertigator_state %}active{% endif %}">
-                    <input type="radio" name="options" id="sys_off" autocomplete="off" {% if not fertigator_state %}checked{% endif %}> Turn off
-                </label>
-            </p>
+            <h4>Required PH</h4>
+            <button type="button" id="dec_ph" class="btn btn-outline-danger"><i class="fas fa-minus"></i></button>
+            <span class="label label-default" id="plant_ph">{{ plant_ph }}</span>
+            <button type="button" id="inc_ph" class="btn btn-outline-success"><i class="fas fa-plus"></i></button>
         </div>
     </div>
 
@@ -101,29 +99,21 @@
         </div>
     </div>
 
-
     <div class="row justify-content-md-center">
         <div class="col col-md text-center">
             <div id="tank_pump_in" class="alert alert-{% if not tank_pump_in %}danger{% else %}success{% endif %}" role="alert">Tank in</div>
+            <div id="water_pump" class="alert alert-{% if not water_pump %}danger{% else %}success{% endif %}" role="alert">Water</div>
+            <div id="acid_pump" class="alert alert-{% if not acid_pump %}danger{% else %}success{% endif %}" role="alert">Acid</div>
         </div>
         <div class="col col-md text-center">
             <div id="tank_pump_out" class="alert alert-{% if not tank_pump_out %}danger{% else %}success{% endif %}" role="alert">Tank out</div>
-        </div>
-        <div class="col col-md text-center">
-            <div id="water_pump" class="alert alert-{% if not water_pump %}danger{% else %}success{% endif %}" role="alert">Water</div>
-        </div>
-        <div class="col col-md text-center">
-            <div id="acid_pump" class="alert alert-{% if not acid_pump %}danger{% else %}success{% endif %}" role="alert">Acid</div>
-        </div><div class="col col-md text-center">
-            <div id="alkali_pump" class="alert alert-{% if not alkali_pump %}danger{% else %}success{% endif %}" role="alert">Alkali</div>
-        </div>
-        <div class="col col-md text-center">
             <div id="fertilizer_pump" class="alert alert-{% if not fertilizer_pump %}danger{% else %}success{% endif %}" role="alert">Fertilizer</div>
+            <div id="alkali_pump" class="alert alert-{% if not alkali_pump %}danger{% else %}success{% endif %}" role="alert">Alkali</div>
         </div>
     </div>
 
     <footer class="footer fixed-bottom">
-      <div style="text-align: center; margin-bottom: 15px">2018</div>
+      <div style="text-align: center; margin-bottom: 15px"></div>
     </footer>
   </div>
   <!-- /container -->

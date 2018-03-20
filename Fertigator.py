@@ -7,6 +7,7 @@ from Tank import Tank
 from WaterLevel import WaterLevel
 import time
 
+
 class Fertigator:
     def __init__(self):
         self.state = 0
@@ -57,11 +58,7 @@ class Fertigator:
         return self.state
 
     def set_state(self, state):
-        int_state = int(state)
-        if int_state == 1:
-            self.state = True
-        else:
-            self.state = False
+        self.state = int(state)
         # Load the last state
         if self.state:
             print("Loading machine state...")
@@ -90,38 +87,51 @@ class Fertigator:
                                                                                                        acid_amount,
                                                                                                        self.main_tank.max_level))
             return
+        # First goes water:
+        self.water_pump.set_state(1)
+        for i in range(140):
+            time.sleep(0.2)
+            self.water_level.state = self.water_level.state + 1
+        self.water_pump.set_state(0)
+        print("Water added!")
+        # The second is fertilizer:
+        self.fertilizer_pump.set_state(1)
+        for i in range(40):
+            time.sleep(0.2)
+            self.water_level.state = self.water_level.state + 1
+        self.fertilizer_pump.set_state(0)
+        print("Fertilizer added!")
+
+        # Now we need to mix it.
+        self.mixer.set_state(1)
+
+        # Control PH while automatic mode is enabled.
         while self.state:
-            # First goes water:
-            self.water_pump.set_state(1)
+            # Let us check PH
+            ph = self.ph.get_state()
             time.sleep(5)
-            self.water_pump.set_state(0)
-            print("Water added!")
-
-            sum = water_amount + fertilize_amount
-            self.fertilizer_pump.set_state(1)
-            # The second is fertilizer:
-            time.sleep(5)
-            self.fertilizer_pump.set_state(0)
-            print("Fertilizer added!")
-
-            # Now we need to mix it for 5 seconds!
-            self.mixer.set_state(1)
-
-            # Let us check PH:
-            while self.ph.get_state() > self.plant.ph:
+            if ph >= self.plant.ph + self.plant.ph_variance:
                 # Too high PH level, need to add the acid:
                 self.acid_pump.set_state(1)
                 time.sleep(5)
                 self.acid_pump.set_state(0)
-
-            while self.ph.get_state() < self.plant.ph:
-                # Too low PH level, need to add the alkali:
+                self.ph.state -= 0.5
+                continue
+            # Too low PH level, need to add the alkali:
+            if ph <= self.plant.ph - self.plant.ph_variance:
                 self.alkali_pump.set_state(1)
                 time.sleep(5)
                 self.alkali_pump.set_state(0)
-
+                self.ph.state += 0.5
+                self.water_level.state = self.water_level.state + 1
+                continue
             self.mixer.set_state(0)
-            return
+            self.main_container_pump_in.set_state(1)
+            self.main_container_pump_out.set_state(1)
+            time.sleep(5)
+            self.main_container_pump_in.set_state(0)
+            self.main_container_pump_out.set_state(0)
+        return
 
     def save_machine_state(self):
         return

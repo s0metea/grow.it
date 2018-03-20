@@ -7,7 +7,6 @@ $(document).ready(function() {
                 $(this).prop('disabled', true);
                 $('#mixer_off').prop('disabled', false);
             });
-
         });
 
         $('#mixer_off').change(function () {
@@ -19,16 +18,22 @@ $(document).ready(function() {
 
         // Increase (state=1) or decrease (state=0) ph to 0.1
         $('#inc_ph').click(function () {
-            $.post(control, {sensor: "plant_ph", state: 0.1}).done(function (data) {
+            $.post(control, {sensor: "plant_ph", state: 1}).done(function (data) {
                 console.log(data);
                 $('#plant_ph').text(data["state"]);
             })
         });
 
         $('#dec_ph').click(function () {
-            $.post(control, {sensor: "plant_ph", state: -0.1}).done(function (data) {
+            $.post(control, {sensor: "plant_ph", state: 0}).done(function (data) {
                 console.log(data);
                 $('#plant_ph').text(data["state"]);
+            })
+        });
+
+        $('#pour_off').click(function () {
+            $.post(control, {sensor: "pour_off", state: 1}).done(function (data) {
+                console.log(data);
             })
         });
 
@@ -50,18 +55,20 @@ $(document).ready(function() {
         });
 
 
-        var update_pumps = function () {
+        var update_data = function () {
             $.get( monitor + "/all").done(function( data ) {success(data)});
         };
 
         var success = function(data) {
+            $("#water_level").html(data['water_level']);
+            $("#current_ph").html(data['current_ph']);
             update_pump_state("#tank_pump_in", data['tank_pump_in']);
             update_pump_state("#tank_pump_out", data['tank_pump_out']);
             update_pump_state("#water_pump", data['water_pump']);
             update_pump_state("#acid_pump", data['acid_pump']);
             update_pump_state("#alkali_pump", data['alkali_pump']);
             update_pump_state("#fertilizer_pump", data['fertilizer_pump']);
-            setTimeout(update_pumps, 300);
+            setTimeout(update_data, 500);
         };
 
         var update_pump_state = function(pump, state) {
@@ -71,7 +78,7 @@ $(document).ready(function() {
                 $(pump).removeClass('alert-success').addClass('alert-danger');
         };
 
-        update_pumps();
+        update_data();
 
         $('#acid_pump').click(function () {
             $.post(control, {sensor: "acid_pump", state: 1}).done(function (data) {

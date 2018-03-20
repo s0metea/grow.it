@@ -38,3 +38,10 @@ class Tank:
         self.ph.get_state()
         return
 
+    def clear(self, state):
+        print("Tank clearing...")
+        self.pump_out.set_state(1)
+        time.sleep(5)
+        self.pump_out.set_state(0)
+        return
+

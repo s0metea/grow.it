@@ -5,7 +5,13 @@ import time
 
 class WaterLevel:
     def __init__(self):
-        self.state = 0.0
+        # The sensor length in mm. By default we use 200mm sensor
+        # 1 mm
+        self.length = 200
+        self.low = 0
+        self.high = self.length
+        self.step = 1
+        self.state = 0
         print("Water level sensor was initialised!")
         return
 
@@ -21,7 +27,6 @@ class WaterLevel:
 
     def start_measurement(self):
         print("Water level measurement was started!")
-        time.sleep(5)
-        self.state = random()
+        self.state = self.state
         print("Water level is: {}".format(self.state))
         return
