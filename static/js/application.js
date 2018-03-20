@@ -3,7 +3,7 @@ var monitor = '/api/1/monitor';
 
 $(document).ready(function() {
         $('#mixer_on').change(function () {
-            $.post(control, {sensor: "mixer", state: 1}).done(function (data) {
+            $.post(control, {sensor: "mixer_state", state: 1}).done(function (data) {
                 $(this).prop('disabled', true);
                 $('#mixer_off').prop('disabled', false);
             });
@@ -11,7 +11,7 @@ $(document).ready(function() {
         });
 
         $('#mixer_off').change(function () {
-            $.post(control, {sensor: "mixer", state: 0}).done(function (data) {
+            $.post(control, {sensor: "mixer_state", state: 0}).done(function (data) {
                 $(this).prop('disabled', true);
                 $('#mixer_on').prop('disabled', false);
             });

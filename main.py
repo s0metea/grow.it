@@ -88,8 +88,8 @@ def control():
     # Get the data:
     sensor = request.form['sensor']
     state = request.form['state']
-    sensors_set.get(sensor, wrong_set_request)(state)
-    new_value = sensors_get.get(sensor, wrong_get_request)()
+    sensors_set.get(sensor)(state)
+    new_value = sensors_get.get(sensor)()
     return jsonify({'success': True, 'sensor': sensor, 'state': new_value}), 200, {'ContentType': 'application/json'}
 
 # About route
