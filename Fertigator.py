@@ -71,7 +71,10 @@ class Fertigator:
         else:
             print("Saving machine state...")
             self.save_machine_state()
+            self.stop_pumps()
             print("Done! Good bye!")
+
+
 
         return
 
@@ -90,16 +93,14 @@ class Fertigator:
         while self.state:
             # First goes water:
             self.water_pump.set_state(1)
-            while self.water_level.get_state() < water_amount:
-                time.sleep(5)
+            time.sleep(5)
             self.water_pump.set_state(0)
             print("Water added!")
 
             sum = water_amount + fertilize_amount
             self.fertilizer_pump.set_state(1)
             # The second is fertilizer:
-            while self.water_level.get_state() < sum:
-                time.sleep(5)
+            time.sleep(5)
             self.fertilizer_pump.set_state(0)
             print("Fertilizer added!")
 
@@ -107,21 +108,19 @@ class Fertigator:
             self.mixer.set_state(1)
 
             # Let us check PH:
-            while self.ph.get_state() != self.plant.ph:
-                if self.water_level.get_state() < sum:
-                    # Too high PH level, need to add the acid:
-                    self.acid_pump.set_state(1)
-                    time.sleep(5)
-                    self.acid_pump.set_state(0)
-                if self.water_level.get_state() < sum:
-                    # Too low PH level, need to add the alkali:
-                    self.alkali_pump.set_state(1)
-                    time.sleep(5)
-                    self.alkali_pump.set_state(0)
-                    # Now we need to mix it for 5 seconds!
+            while self.ph.get_state() > self.plant.ph:
+                # Too high PH level, need to add the acid:
+                self.acid_pump.set_state(1)
+                time.sleep(5)
+                self.acid_pump.set_state(0)
+
+            while self.ph.get_state() < self.plant.ph:
+                # Too low PH level, need to add the alkali:
+                self.alkali_pump.set_state(1)
+                time.sleep(5)
+                self.alkali_pump.set_state(0)
 
             self.mixer.set_state(0)
-
             return
 
     def save_machine_state(self):
@@ -129,3 +128,11 @@ class Fertigator:
 
     def load_machine_state(self):
         return
+
+    def stop_pumps(self):
+        self.main_container_pump_in.set_state(0)
+        self.main_container_pump_out.set_state(0)
+        self.water_pump.set_state(0)
+        self.acid_pump.set_state(0)
+        self.alkali_pump.set_state(0)
+        self.fertilizer_pump.set_state(0)

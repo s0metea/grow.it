@@ -61,7 +61,7 @@ $(document).ready(function() {
             update_pump_state("#acid_pump", data['acid_pump']);
             update_pump_state("#alkali_pump", data['alkali_pump']);
             update_pump_state("#fertilizer_pump", data['fertilizer_pump']);
-            setTimeout(update_pumps, 1000);
+            setTimeout(update_pumps, 300);
         };
 
         var update_pump_state = function(pump, state) {
