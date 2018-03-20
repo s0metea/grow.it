@@ -5,11 +5,11 @@ import time
 class Mixer:
     def __init__(self, step_pin, direction_pin, enable_pin):
         # By default we don't mix the water
-        self.state = 0
+        self.state = False
         self.step_pin = step_pin
         self.direction_pin = direction_pin
         self.enable_pin = enable_pin
-        self.delay_time = 100
+        self.delay_time = 10
 
         # self.step_gpio = mraa.Gpio(step_pin)
         # self.direction_gpio = mraa.Gpio(direction_pin)
@@ -22,10 +22,14 @@ class Mixer:
 
     # Start or Stop the mixing of the water
     def set_state(self, state):
-        self.state = state
-        print("The mixer state was changed to: {}".format(state))
+        int_state = int(state)
+        if int_state == 1:
+            self.state = True
+        else:
+            self.state = False
+        print("The mixer state was changed to: {}".format(self.state))
         if self.state:
-            Thread(target=self.mix, args=()).run()
+            Thread(target=self.mix, args=()).start()
         return
 
     # Get the mixer state
@@ -45,10 +49,10 @@ class Mixer:
             time.sleep(self.delay_time)
             # self.direction_gpio.write(0)
             # time.sleep(self.delay_time)
-            print("The stepper did a step.")
+            print("The mixer did a step.")
         # Disable pins
         # self.direction_gpio.write(0)
         # self.enable_gpio.write(0)
         # self.step_gpio.write(0)
-        print("The stepper was stopped.")
+        print("The mixer was stopped.")
 

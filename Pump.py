@@ -11,9 +11,9 @@ class Pump:
 
     # Turn the pump on
     def set_state(self, state):
-        self.state = state
+        self.state = bool(state)
         if self.state:
-            Thread(target=self.run, args=()).run()
+            Thread(target=self.run, args=()).start()
         return
 
     # Get the pump state
