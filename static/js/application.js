@@ -34,7 +34,7 @@ $(document).ready(function() {
 
 
         $('#sys_on').click(function () {
-            $.post(control, {sensor: "plant_ph", state: 1}).done(function (data) {
+            $.post(control, {sensor: "fertigator_state", state: 1}).done(function (data) {
                 console.log(data);
                 $(this).prop('disabled', true);
                 $('#sys_off').prop('disabled', false);
@@ -42,7 +42,7 @@ $(document).ready(function() {
         });
 
         $('#sys_off').click(function () {
-            $.post(control, {sensor: "plant_ph", state: 0}).done(function (data) {
+            $.post(control, {sensor: "fertigator_state", state: 0}).done(function (data) {
                 $(this).prop('disabled', true);
                 $('#sys_on').prop('disabled', false);
             })
