@@ -33,7 +33,7 @@ $(document).ready(function() {
         });
 
 
-        $('#sys_on').click(function () {
+        $('#sys_on').change(function () {
             $.post(control, {sensor: "fertigator_state", state: 1}).done(function (data) {
                 console.log(data);
                 $(this).prop('disabled', true);
@@ -41,12 +41,16 @@ $(document).ready(function() {
             })
         });
 
-        $('#sys_off').click(function () {
+        $('#sys_off').change(function () {
             $.post(control, {sensor: "fertigator_state", state: 0}).done(function (data) {
+                console.log(data);
                 $(this).prop('disabled', true);
                 $('#sys_on').prop('disabled', false);
             })
         });
+
+
+
 
         $('#acid_pump').click(function () {
             $.post(control, {sensor: "acid_pump", state: 1}).done(function (data) {

@@ -12,7 +12,7 @@ class WaterLevel:
     # Get the PH state
     def get_state(self):
         print("Water level is: {}".format(self.state))
-        Thread(target=self.start_measurement(), args=()).start()
+        Thread(target=self.start_measurement, args=()).start()
         return self.state
 
     # Method is not available for Water level sensor
