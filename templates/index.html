@@ -46,8 +46,14 @@
     </div>
 
     <div class="row justify-content-md-center" style="align-content: center">
+        <div class="col col-md-12 text-center">
+            <h3><span class="label label-default" id="plant">{{ plant }}</span></h3>
+        </div>
+    </div>
+
+    <div class="row justify-content-md-center" style="align-content: center">
         <div class="col col-md text-center">
-            <h4>Control water level:</h4>
+            <h4>Main tank</h4>
             <p>{{ water_level }}</p>
             <p>
                 <button type="button" id="fill" class="btn btn-outline-success">Fill the tank</button>
@@ -56,16 +62,16 @@
         </div>
 
         <div class="col col-md text-center">
-            <h4>Change PH</h4>
+            <h3>Change PH</h3>
             <button type="button" id="dec_ph" class="btn btn-outline-danger"><i class="fas fa-minus"></i></button>
-            <span class="label label-default" id="ph_level">{{ ph_level }}</span>
+            <span class="label label-default" id="plant_ph">{{ plant_ph }}</span>
             <button type="button" id="inc_ph" class="btn btn-outline-success"><i class="fas fa-plus"></i></button>
         </div>
     </div>
 
     <div class="row justify-content-md-center">
         <div class="col col-md text-center">
-            <h4>Mixer control:</h4>
+            <h4>Mixer control</h4>
             <p class="btn-outline-group btn-group-toggle" data-toggle="buttons">
                 <label class="btn btn-outline-success {% if mixer_state %}active{% endif %}">
                     <input type="radio" name="options" id="mixer_on" autocomplete="off" {% if mixer_state %}checked{% endif %}> Turn on the mixer
@@ -78,11 +84,42 @@
 
         <div class="col col-md text-center">
             <h4>Power supply</h4>
-            <p>{{ system_status }}</p>
-            <p>
-                <button type="button" id="sys_on" class="btn btn-outline-success">Turn off</button>
-                <button type="button" id="sys_off" class="btn btn-outline-danger">Turn on</button>
+            <p class="btn-outline-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-outline-success {% if fertigator_state %}active{% endif %}">
+                    <input type="radio" name="options" id="sys_on" autocomplete="off" {% if fertigator_state %}checked{% endif %}> Turn on
+                </label>
+                <label class="btn btn-outline-danger {% if not fertigator_state %}active{% endif %}">
+                    <input type="radio" name="options" id="sys_off" autocomplete="off" {% if not fertigator_state %}checked{% endif %}> Turn off
+                </label>
             </p>
+        </div>
+    </div>
+
+    <div class="row justify-content-md-center" style="align-content: center">
+        <div class="col col-md-12 text-center">
+            <h4><span class="label label-default" id="plant"><h3>Pumps states:</h3>
+</span></h4>
+        </div>
+    </div>
+
+
+    <div class="row justify-content-md-center">
+        <div class="col col-md text-center">
+            <div class="alert alert-{% if not tank_pump_in %}danger{% else %}success{% endif %}" role="alert">{{tank_pump_in}}</div>
+        </div>
+        <div class="col col-md text-center">
+            <div class="alert alert-{% if not tank_pump_out %}danger{% else %}success{% endif %}" role="alert">{{tank_pump_out}}</div>
+        </div>
+        <div class="col col-md text-center">
+            <div class="alert alert-{% if not water_pump %}danger{% else %}success{% endif %}" role="alert">{{water_pump}}</div>
+        </div>
+        <div class="col col-md text-center">
+            <div class="alert alert-{% if not acid_pump %}danger{% else %}success{% endif %}" role="alert">{{acid_pump}}</div>
+        </div><div class="col col-md text-center">
+            <div class="alert alert-{% if not alkali_pump %}danger{% else %}success{% endif %}" role="alert">{{alkali_pump}}</div>
+        </div>
+        <div class="col col-md text-center">
+            <div class="alert alert-{% if not fertilizer_pump %}danger{% else %}success{% endif %}" role="alert">{{fertilizer_pump}}</div>
         </div>
     </div>
 

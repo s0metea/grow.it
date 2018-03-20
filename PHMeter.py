@@ -15,6 +15,10 @@ class PHMeter:
         Thread(target=self.start_measurement(), args=()).start()
         return self.state
 
+    # Method is not available for PH
+    def set_state(self, state):
+        return self.state
+
     def start_measurement(self):
         print("PH level measurement was started!")
         time.sleep(5)

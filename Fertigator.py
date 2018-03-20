@@ -54,14 +54,22 @@ class Fertigator:
     def get_plant(self):
         return self.plant
 
-    def get_state(self, state):
+    def get_state(self):
         return self.state
 
     def set_state(self, state):
         # Load the last state
         self.state = state
         if state:
+            print("Loading machine state...")
+            self.load_machine_state()
+            print("Done! Launching automatic mode...")
             Thread(target=self.automatic_mode(), args=()).run()
+        else:
+            print("Saving machine state...")
+            self.save_machine_state()
+            print("Done! Good bye!")
+
         return
 
     def automatic_mode(self):
@@ -103,3 +111,9 @@ class Fertigator:
                         # Too low PH level, need to add the alkali:
                         self.alkali_pump.set_state(1)
             return
+
+    def save_machine_state(self):
+        return
+
+    def load_machine_state(self):
+        return
