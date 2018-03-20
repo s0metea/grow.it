@@ -7,10 +7,9 @@ from Tank import Tank
 from WaterLevel import WaterLevel
 import time
 
-
 class Fertigator:
     def __init__(self):
-        self.state = 1
+        self.state = 0
 
         # We have a plant:
         self.plant = Plant(strain="Tomato", ph=7)
@@ -58,8 +57,12 @@ class Fertigator:
         return self.state
 
     def set_state(self, state):
+        int_state = int(state)
+        if int_state == 1:
+            self.state = True
+        else:
+            self.state = False
         # Load the last state
-        self.state = state
         if self.state:
             print("Loading machine state...")
             self.load_machine_state()
@@ -110,12 +113,14 @@ class Fertigator:
                     self.acid_pump.set_state(1)
                     time.sleep(5)
                     self.acid_pump.set_state(0)
-                else:
-                    if self.water_level.get_state() < sum:
-                        # Too low PH level, need to add the alkali:
-                        self.alkali_pump.set_state(1)
-                        time.sleep(5)
-                        self.alkali_pump.set_state(0)
+                if self.water_level.get_state() < sum:
+                    # Too low PH level, need to add the alkali:
+                    self.alkali_pump.set_state(1)
+                    time.sleep(5)
+                    self.alkali_pump.set_state(0)
+                    # Now we need to mix it for 5 seconds!
+
+            self.mixer.set_state(0)
 
             return
 

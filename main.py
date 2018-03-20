@@ -69,18 +69,19 @@ def monitor():
 @app.route("/api/1/monitor/all", methods=['GET'])
 def monitor_all():
     return jsonify(
-        plant=sensors_get['plant'](),
-        plant_ph=sensors_get['plant_ph'](),
-        mixer_state=sensors_get['mixer_state'](),
-        current_ph=sensors_get['current_ph'](),
-        water_level=sensors_get['water_level'](),
+        #plant=sensors_get['plant'](),
+        #plant_ph=sensors_get['plant_ph'](),
+        #mixer_state=sensors_get['mixer_state'](),
+        #current_ph=sensors_get['current_ph'](),
+        #water_level=sensors_get['water_level'](),
         tank_pump_in=sensors_get['tank_pump_in'](),
         tank_pump_out=sensors_get['tank_pump_out'](),
         water_pump=sensors_get['water_pump'](),
         acid_pump=sensors_get['acid_pump'](),
         alkali_pump=sensors_get['alkali_pump'](),
         fertilizer_pump=sensors_get['fertilizer_pump'](),
-        fertigator_state=sensors_get['fertigator_state']())
+        #fertigator_state=sensors_get['fertigator_state']()
+     )
 
 # Change value by POST request.
 @app.route("/api/1/control", methods=['POST'])

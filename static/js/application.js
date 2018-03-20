@@ -50,12 +50,33 @@ $(document).ready(function() {
         });
 
 
+        var update_pumps = function () {
+            $.get( monitor + "/all").done(function( data ) {success(data)});
+        };
 
+        var success = function(data) {
+            update_pump_state("#tank_pump_in", data['tank_pump_in']);
+            update_pump_state("#tank_pump_out", data['tank_pump_out']);
+            update_pump_state("#water_pump", data['water_pump']);
+            update_pump_state("#acid_pump", data['acid_pump']);
+            update_pump_state("#alkali_pump", data['alkali_pump']);
+            update_pump_state("#fertilizer_pump", data['fertilizer_pump']);
+            setTimeout(update_pumps, 1000);
+        };
+
+        var update_pump_state = function(pump, state) {
+            if(state)
+                $(pump).removeClass('alert-danger').addClass('alert-success');
+            else
+                $(pump).removeClass('alert-success').addClass('alert-danger');
+        };
+
+        update_pumps();
 
         $('#acid_pump').click(function () {
             $.post(control, {sensor: "acid_pump", state: 1}).done(function (data) {
                 console.log(data);
             });
-        })
+        });
 });
 

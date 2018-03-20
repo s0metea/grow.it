@@ -104,21 +104,21 @@
 
     <div class="row justify-content-md-center">
         <div class="col col-md text-center">
-            <div class="alert alert-{% if not tank_pump_in %}danger{% else %}success{% endif %}" role="alert">{{tank_pump_in}}</div>
+            <div id="tank_pump_in" class="alert alert-{% if not tank_pump_in %}danger{% else %}success{% endif %}" role="alert">Tank in</div>
         </div>
         <div class="col col-md text-center">
-            <div class="alert alert-{% if not tank_pump_out %}danger{% else %}success{% endif %}" role="alert">{{tank_pump_out}}</div>
+            <div id="tank_pump_out" class="alert alert-{% if not tank_pump_out %}danger{% else %}success{% endif %}" role="alert">Tank out</div>
         </div>
         <div class="col col-md text-center">
-            <div class="alert alert-{% if not water_pump %}danger{% else %}success{% endif %}" role="alert">{{water_pump}}</div>
+            <div id="water_pump" class="alert alert-{% if not water_pump %}danger{% else %}success{% endif %}" role="alert">Water</div>
         </div>
         <div class="col col-md text-center">
-            <div class="alert alert-{% if not acid_pump %}danger{% else %}success{% endif %}" role="alert">{{acid_pump}}</div>
+            <div id="acid_pump" class="alert alert-{% if not acid_pump %}danger{% else %}success{% endif %}" role="alert">Acid</div>
         </div><div class="col col-md text-center">
-            <div class="alert alert-{% if not alkali_pump %}danger{% else %}success{% endif %}" role="alert">{{alkali_pump}}</div>
+            <div id="alkali_pump" class="alert alert-{% if not alkali_pump %}danger{% else %}success{% endif %}" role="alert">Alkali</div>
         </div>
         <div class="col col-md text-center">
-            <div class="alert alert-{% if not fertilizer_pump %}danger{% else %}success{% endif %}" role="alert">{{fertilizer_pump}}</div>
+            <div id="fertilizer_pump" class="alert alert-{% if not fertilizer_pump %}danger{% else %}success{% endif %}" role="alert">Fertilizer</div>
         </div>
     </div>
 

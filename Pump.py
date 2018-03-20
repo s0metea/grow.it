@@ -5,14 +5,18 @@ import time
 
 class Pump:
     def __init__(self, pump_name):
-        self.state = 0
+        self.state = False
         self.pump_name = pump_name
         print("The pump \"{}\" was initialised.".format(pump_name))
         return
 
     # Turn the pump on
     def set_state(self, state):
-        self.state = bool(state)
+        int_state = int(state)
+        if int_state == 1:
+            self.state = True
+        else:
+            self.state = False
         if self.state:
             Thread(target=self.run, args=()).start()
         return
