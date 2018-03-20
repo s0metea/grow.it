@@ -3,21 +3,21 @@ from threading import Thread
 #import mraa
 import time
 
-
-class PHMeter:
+class WaterLevel:
     def __init__(self):
-        self.state = 7.0
-        print("PH level sensor was initialised!")
+        self.state = 0.0
+        print("Water level sensor was initialised!")
         return
 
     # Get the PH state
     def get_state(self):
+        print("Water level is: {}".format(self.state))
         Thread(target=self.start_measurement(), args=()).run()
         return self.state
 
     def start_measurement(self):
-        print("PH level measurement was started!")
+        print("Water level measurement was started!")
         time.sleep(5)
         self.state = random()
-        print("PH level is: {}".format(self.state))
+        print("Water level is: {}".format(self.state))
         return

@@ -1,18 +1,31 @@
+from threading import Thread
+import time
+#import mraa
+
 class Pump:
-    def __init__(self):
+    def __init__(self, pump_name):
         self.state = 0
+        self.pump_name = pump_name
+        print("The pump {} was initialised.".format(pump_name))
         return
 
     # Turn the pump on
-    def on(self):
-        self.state = 1
-        return
-
-    # Turn the pump off
-    def off(self):
-        self.state = 0
+    def set_state(self, state):
+        self.state = state
+        if self.state:
+            Thread(target=self.run, args=()).run()
         return
 
     # Get the pump state
     def get_state(self):
+        print("The pump {} state is: {}.".format(self.pump_name, self.state))
         return self.state
+
+    def run(self):
+        while self.state:
+            print("The pump {} state is running.".format(self.pump_name))
+            time.sleep(100)
+        return
+
+    def get_pump_name(self):
+        return self.pump_name

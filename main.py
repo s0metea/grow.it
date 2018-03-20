@@ -1,37 +1,42 @@
 from flask import *
 import time
-from Mixer import Mixer
-from Tank import Tank
-from PHMeter import PHMeter
+
+from Ferigator import Fertigator
 
 app = Flask(__name__)
 
-mixer = Mixer()
-ph = PHMeter()
-water = Tank()
-acid = Tank()
+fertigator = Fertigator()
 
 sensors_set = {
-        "mixer": mixer.set_state,
-        "tank": 1,
-        "ph": ph.change,
+        "plant": fertigator.plant.set_strain,
+        "plant_ph": fertigator.plant.set_ph,
+        "mixer": fertigator.mixer.set_state,
+        "tank_pump_in": fertigator.main_container_pump_in.set_state,
+        "tank_pump_out": fertigator.main_container_pump_out.set_state,
+        "water_pump": fertigator.water_pump.set_state,
+        "acid_pump": fertigator.acid_pump.set_state,
+        "alkali_pump": fertigator.alkali_pump.set_state,
+        "fertilizer_pump": fertigator.fertilizer_pump.set_state,
     }
 
 sensors_get = {
-        "mixer": mixer.get_state,
-        "tank": 1,
-        "ph": ph.get_state,
-    }
-
-states = {
-        "1": 1,
-        "0": 0
+        "plant": fertigator.plant.get_strain,
+        "plant_ph": fertigator.plant.get_ph,
+        "mixer": fertigator.mixer.get_state,
+        "ph": fertigator.ph.get_state,
+        "water_level": fertigator.water_level.get_state,
+        "tank_pump_in": fertigator.main_container_pump_in.get_state,
+        "tank_pump_out": fertigator.main_container_pump_out.get_state,
+        "water_pump": fertigator.water_pump.get_state,
+        "acid_pump": fertigator.acid_pump.get_state,
+        "alkali_pump": fertigator.alkali_pump.get_state,
+        "fertilizer_pump": fertigator.fertilizer_pump.get_state,
     }
 
 # Index route
 @app.route("/")
 def index():
-    return render_template('index.html', mixer_state=mixer.get_state(), ph_level=ph.get_state())
+    return render_template('index.html', mixer_state=fertigator.mixer.get_state(), ph_level=fertigator.plant.get_ph())
 
 # Get response handle:
 @app.route("/api/1/monitor", methods=['GET'])
@@ -43,19 +48,24 @@ def monitor():
         state=sensors_get[sensor]()
     )
 
+
 # Get response handle:
 @app.route("/api/1/monitor/all", methods=['GET'])
 def monitor_all():
-    sensors = {
-      "mixer": mixer.get_state,
-      "tank": 1,
-      "ph": ph.get_state,
-    }
     return jsonify(
         timestamp=time.time(),
-        mixer=mixer.get_state(),
-        ph=ph.get_state(),
+        plant=fertigator.plant.get_strain(),
+        plant_ph=fertigator.plant.get_ph(),
+        mixer=fertigator.mixer.get_state(),
+        water=fertigator.water_pump.get_level(),
+        alkali=fertigator.alkali_pump.get_level(),
+        acid=fertigator.acid_pump.get_level(),
+        fertilizer=fertigator.fertilizer_pump.get_level(),
+        tank_pump_in=fertigator.main_container_pump_in.get_state,
+        tank_pump_out=fertigator.main_container_pump_out.get_state,
+        ph=fertigator.ph.get_state(),
     )
+
 
 # Change value by POST request.
 @app.route("/api/1/control", methods=['POST'])
@@ -63,7 +73,7 @@ def control():
     # Get the data:
     sensor = request.form['sensor']
     state = request.form['state']
-    sensors_set[sensor](states[state])
+    sensors_set[sensor](state)
     new_value = sensors_get[sensor]()
     return jsonify({'success': True, 'sensor': sensor, 'state': new_value}), 200, {'ContentType': 'application/json'}
 
