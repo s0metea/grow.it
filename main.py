@@ -17,6 +17,7 @@ sensors_set = {
         "acid_pump": fertigator.acid_pump.set_state,
         "alkali_pump": fertigator.alkali_pump.set_state,
         "fertilizer_pump": fertigator.fertilizer_pump.set_state,
+        "fertigator_state": fertigator.get_state,
     }
 
 sensors_get = {
@@ -31,7 +32,9 @@ sensors_get = {
         "acid_pump": fertigator.acid_pump.get_state,
         "alkali_pump": fertigator.alkali_pump.get_state,
         "fertilizer_pump": fertigator.fertilizer_pump.get_state,
-    }
+        "fertigator_state": fertigator.set_state,
+
+}
 
 # Index route
 @app.route("/")
