@@ -18,11 +18,11 @@ class Fertigator:
         # Mixer to mix the components
         self.mixer = Mixer(step_pin=8, direction_pin=9, enable_pin=10)
         # PH measurements:
-        self.ph = PHMeter()
+        self.ph = PHMeter(pin=2)
         # The main tank pumps:
-        self.main_container_pump_in = Pump("Main container pump (in)", 4)
-        self.main_container_pump_out = Pump("Main container pump (out)", 5)
-        self.water_level = WaterLevel(0)
+        self.main_container_pump_in = Pump("Main container pump (in)", pin=4)
+        self.main_container_pump_out = Pump("Main container pump (out)", pin=5)
+        self.water_level = WaterLevel(pin=0)
         # The tanks with the components:
         self.main_tank = Tank(max_level=0.9,
                               water_level_sensor=self.water_level,
@@ -30,12 +30,11 @@ class Fertigator:
                               pump_out=self.main_container_pump_out,
                               ph=self.ph,
                               mixer=self.mixer)
-
         # 4 Pumps for each of the containers:
-        self.water_pump = Pump("Water pump", 0)
-        self.acid_pump = Pump("Acid pump", 1)
-        self.alkali_pump = Pump("Alkali pump", 2)
-        self.fertilizer_pump = Pump("Fertilizer pump", 3)
+        self.water_pump = Pump("Water pump", pin=0)
+        self.acid_pump = Pump("Acid pump", pin=1)
+        self.alkali_pump = Pump("Alkali pump", pin=2)
+        self.fertilizer_pump = Pump("Fertilizer pump", pin=3)
         return
 
     # Getters for the sensors:
@@ -58,7 +57,7 @@ class Fertigator:
         return self.state
 
     def set_state(self, state):
-        if int(state) == 1:
+        if state == 1:
             self.state = True
         else:
             self.state = False
@@ -91,14 +90,12 @@ class Fertigator:
         self.water_pump.set_state(1)
         for i in range(140):
             time.sleep(0.2)
-            self.water_level.state = self.water_level.state + 1
         self.water_pump.set_state(0)
         print("Water added!")
         # The second is fertilizer:
         self.fertilizer_pump.set_state(1)
         for i in range(40):
             time.sleep(0.2)
-            self.water_level.state = self.water_level.state + 1
         self.fertilizer_pump.set_state(0)
         print("Fertilizer added!")
 
@@ -116,21 +113,20 @@ class Fertigator:
                 time.sleep(5)
                 self.acid_pump.set_state(0)
                 self.ph.state -= 0.5
-                continue
+
             # Too low PH level, need to add the alkali:
             if ph <= self.plant.ph - self.plant.ph_variance:
                 self.alkali_pump.set_state(1)
                 time.sleep(5)
                 self.alkali_pump.set_state(0)
                 self.ph.state += 0.5
-                self.water_level.state = self.water_level.state + 1
                 continue
             self.mixer.set_state(0)
-            self.main_container_pump_in.set_state(1)
-            self.main_container_pump_out.set_state(1)
-            time.sleep(5)
-            self.main_container_pump_in.set_state(0)
-            self.main_container_pump_out.set_state(0)
+            #self.main_container_pump_in.set_state(1)
+            #self.main_container_pump_out.set_state(1)
+            #time.sleep(5)
+            #self.main_container_pump_in.set_state(0)
+            #self.main_container_pump_out.set_state(0)
         return
 
     def save_machine_state(self):

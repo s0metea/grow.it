@@ -5,8 +5,9 @@ import time
 
 
 class PHMeter:
-    def __init__(self):
+    def __init__(self, pin):
         self.state = 7.0
+        #self.sensor = mraa.Aio(pin)
         print("PH level sensor was initialised!")
         return
 
@@ -21,7 +22,8 @@ class PHMeter:
 
     def start_measurement(self):
         print("PH level measurement was started!")
-        time.sleep(5)
-        self.state = round(self.state + random(), 2)
+        time.sleep(15)
+        #self.state = self.sensor.readFloat()
+        self.state = round(self.state + random(), 1)
         print("PH level is: {}".format(self.state))
         return

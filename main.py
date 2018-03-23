@@ -90,7 +90,7 @@ def monitor_all():
 def control():
     # Get the data:
     sensor = request.form['sensor']
-    state = request.form['state']
+    state = int(request.form['state'])
     sensors_set[sensor](state)
     new_state = sensors_get[sensor]()
     return jsonify({'success': True, 'sensor': sensor, 'state': new_state}), 200, {'ContentType': 'application/json'}

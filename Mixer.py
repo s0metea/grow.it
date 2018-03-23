@@ -22,8 +22,7 @@ class Mixer:
 
     # Start or Stop the mixing of the water
     def set_state(self, state):
-        int_state = int(state)
-        if int_state == 1:
+        if state == 1:
             self.state = True
         else:
             self.state = False

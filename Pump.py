@@ -14,8 +14,7 @@ class Pump:
 
     # Turn the pump on
     def set_state(self, state):
-        int_state = int(state)
-        if int_state == 1:
+        if state == 1:
             self.state = True
         else:
             self.state = False
@@ -31,9 +30,9 @@ class Pump:
     def run(self):
         while self.state:
             print("The pump \"{}\" state is running.".format(self.pump_name))
+            time.sleep(1)
             #self.gpio.write(1)
-            time.sleep(10)
-            #self.gpio.write(0)
+        # self.gpio.write(0)
         return
 
     def get_pump_name(self):

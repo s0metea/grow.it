@@ -11,13 +11,13 @@ class WaterLevel:
         self.low = 0
         self.high = self.length
         self.step = 1
-        # self.sensor = mraa.Aio(0)
+        #self.sensor = mraa.Aio(pin)
         self.state = 0
         #self.state = self.sensor.readFloat()
         print("Water level sensor was initialised!")
         return
 
-    # Get the PH state
+    # Get the water level:
     def get_state(self):
         print("Water level is: {}".format(self.state))
         Thread(target=self.start_measurement, args=()).start()
