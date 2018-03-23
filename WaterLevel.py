@@ -4,14 +4,16 @@ from threading import Thread
 import time
 
 class WaterLevel:
-    def __init__(self):
+    def __init__(self, pin):
         # The sensor length in mm. By default we use 200mm sensor
         # 1 mm
         self.length = 200
         self.low = 0
         self.high = self.length
         self.step = 1
+        # self.sensor = mraa.Aio(0)
         self.state = 0
+        #self.state = self.sensor.readFloat()
         print("Water level sensor was initialised!")
         return
 
@@ -27,6 +29,6 @@ class WaterLevel:
 
     def start_measurement(self):
         print("Water level measurement was started!")
-        self.state = self.state
+        # self.state = self.sensor.readFloat()
         print("Water level is: {}".format(self.state))
         return

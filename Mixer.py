@@ -41,12 +41,12 @@ class Mixer:
         print("The mixer was started")
         # Set direction:
         # self.direction_gpio.write(1)
-        # Enable pin:
+        # # Enable pin:
         # self.enable_gpio.write(1)
         while self.state:
             # To control stepper we should change step gpio like: 1->0->1->0...
             # self.step_gpio.write(1)
-            time.sleep(self.delay_time)
+            # time.sleep(self.delay_time)
             # self.direction_gpio.write(0)
             # time.sleep(self.delay_time)
             print("The mixer did a step.")

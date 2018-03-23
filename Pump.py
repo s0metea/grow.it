@@ -4,9 +4,11 @@ import time
 
 
 class Pump:
-    def __init__(self, pump_name):
+    def __init__(self, pump_name, pin):
         self.state = False
         self.pump_name = pump_name
+        #self.gpio = mraa.Gpio(pin)
+        #self.gpio.dir(mraa.DIR_OUT)
         print("The pump \"{}\" was initialised.".format(pump_name))
         return
 
@@ -29,7 +31,9 @@ class Pump:
     def run(self):
         while self.state:
             print("The pump \"{}\" state is running.".format(self.pump_name))
-            time.sleep(100)
+            #self.gpio.write(1)
+            time.sleep(10)
+            #self.gpio.write(0)
         return
 
     def get_pump_name(self):

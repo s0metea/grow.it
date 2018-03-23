@@ -16,13 +16,13 @@ class Fertigator:
         self.plant = Plant(strain="Tomato", ph=7)
 
         # Mixer to mix the components
-        self.mixer = Mixer(step_pin=1, direction_pin=2, enable_pin=3)
+        self.mixer = Mixer(step_pin=8, direction_pin=9, enable_pin=10)
         # PH measurements:
         self.ph = PHMeter()
         # The main tank pumps:
-        self.main_container_pump_in = Pump("Main container pump (in)")
-        self.main_container_pump_out = Pump("Main container pump (out)")
-        self.water_level = WaterLevel()
+        self.main_container_pump_in = Pump("Main container pump (in)", 4)
+        self.main_container_pump_out = Pump("Main container pump (out)", 5)
+        self.water_level = WaterLevel(0)
         # The tanks with the components:
         self.main_tank = Tank(max_level=0.9,
                               water_level_sensor=self.water_level,
@@ -32,10 +32,10 @@ class Fertigator:
                               mixer=self.mixer)
 
         # 4 Pumps for each of the containers:
-        self.water_pump = Pump("Water pump")
-        self.acid_pump = Pump("Acid pump")
-        self.alkali_pump = Pump("Alkali pump")
-        self.fertilizer_pump = Pump("Fertilizer pump")
+        self.water_pump = Pump("Water pump", 0)
+        self.acid_pump = Pump("Acid pump", 1)
+        self.alkali_pump = Pump("Alkali pump", 2)
+        self.fertilizer_pump = Pump("Fertilizer pump", 3)
         return
 
     # Getters for the sensors:
@@ -58,7 +58,10 @@ class Fertigator:
         return self.state
 
     def set_state(self, state):
-        self.state = int(state)
+        if int(state) == 1:
+            self.state = True
+        else:
+            self.state = False
         # Load the last state
         if self.state:
             print("Loading machine state...")
@@ -70,9 +73,6 @@ class Fertigator:
             self.save_machine_state()
             self.stop_pumps()
             print("Done! Good bye!")
-
-
-
         return
 
     def automatic_mode(self):
