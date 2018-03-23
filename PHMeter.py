@@ -24,7 +24,5 @@ class PHMeter:
         print("PH level measurement was started!")
         time.sleep(15)
         self.state = round(self.sensor.readFloat(), 2)
-        # Debug:
-        #self.state = round(self.state + random(), 1)
         print("PH level is: {}".format(self.state))
         return

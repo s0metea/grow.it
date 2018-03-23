@@ -12,7 +12,7 @@ class Plant:
         return self.strain
 
     def set_ph(self, ph):
-        if int(ph):
+        if ph:
             self.ph += 0.1
         else:
             self.ph -= 0.1

@@ -1,3 +1,4 @@
+import json
 from threading import Thread
 from Mixer import Mixer
 from PHMeter import PHMeter
@@ -18,7 +19,7 @@ class Fertigator:
         # Mixer to mix the components
         self.mixer = Mixer(step_pin=8, direction_pin=9, enable_pin=10)
         # PH measurements:
-        self.ph = PHMeter(pin=2)
+        self.ph = PHMeter(pin=1)
         # The main tank pumps:
         self.main_container_pump_in = Pump("Main container pump (in)", pin=4)
         self.main_container_pump_out = Pump("Main container pump (out)", pin=5)
@@ -57,10 +58,6 @@ class Fertigator:
         return self.state
 
     def set_state(self, state):
-        if state == 1:
-            self.state = True
-        else:
-            self.state = False
         # Load the last state
         if self.state:
             print("Loading machine state...")
@@ -117,22 +114,34 @@ class Fertigator:
             # Too low PH level, need to add the alkali:
             if ph <= self.plant.ph - self.plant.ph_variance:
                 self.alkali_pump.set_state(1)
-                time.sleep(15)
+                time.sleep(5)
                 self.alkali_pump.set_state(0)
                 self.ph.state += 0.5
                 continue
-            self.mixer.set_state(0)
-            #self.main_container_pump_in.set_state(1)
-            #self.main_container_pump_out.set_state(1)
-            #time.sleep(5)
-            #self.main_container_pump_in.set_state(0)
-            #self.main_container_pump_out.set_state(0)
+        time.sleep(5)
+        self.mixer.set_state(0)
+        #self.main_container_pump_in.set_state(1)
+        #self.main_container_pump_out.set_state(1)
+        #time.sleep(5)
+        #self.main_container_pump_in.set_state(0)
+        #self.main_container_pump_out.set_state(0)
         return
 
     def save_machine_state(self):
+        json_data = open("config.json", "w")
+        data = json.dumps({
+            "strain" : self.plant.strain,
+            "plant_ph": self.plant.ph
+        })
+        self.plant.strain = data['plant_strain']
+        self.plant.ph = data['plant_ph']
         return
 
     def load_machine_state(self):
+        json_data = open("config.json", "r")
+        data = json.loads(json_data)
+        self.plant.strain = data['plant_strain']
+        self.plant.ph = data['plant_ph']
         return
 
     def stop_pumps(self):

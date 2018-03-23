@@ -100,7 +100,7 @@ $(document).ready(function() {
                 console.log(data);
             });
         });
-        $('#water_pump').click(function () {
+        $('#water_pump').change(function () {
             water_pump_state = !water_pump_state;
             $.post(control, {sensor: "water_pump", state: !water_pump_state}).done(function (data) {
                 console.log(data);
