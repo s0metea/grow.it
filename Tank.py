@@ -41,7 +41,8 @@ class Tank:
     def clear(self, state):
         print("Tank clearing...")
         self.pump_out.set_state(1)
-        time.sleep(5)
+        while self.water_level_sensor.get_state > 0.0:
+            time.sleep(1)
         self.pump_out.set_state(0)
         return
 

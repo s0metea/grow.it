@@ -88,14 +88,14 @@ class Fertigator:
             return
         # First goes water:
         self.water_pump.set_state(1)
-        for i in range(140):
-            time.sleep(0.2)
+        while self.water_level.get_state() < 0.6:
+            time.sleep(1)
         self.water_pump.set_state(0)
         print("Water added!")
         # The second is fertilizer:
         self.fertilizer_pump.set_state(1)
-        for i in range(40):
-            time.sleep(0.2)
+        while self.water_level.get_state() < 0.8:
+            time.sleep(1)
         self.fertilizer_pump.set_state(0)
         print("Fertilizer added!")
 
@@ -106,7 +106,7 @@ class Fertigator:
         while self.state:
             # Let us check PH
             ph = self.ph.get_state()
-            time.sleep(5)
+            time.sleep(15)
             if ph >= self.plant.ph + self.plant.ph_variance:
                 # Too high PH level, need to add the acid:
                 self.acid_pump.set_state(1)
@@ -117,7 +117,7 @@ class Fertigator:
             # Too low PH level, need to add the alkali:
             if ph <= self.plant.ph - self.plant.ph_variance:
                 self.alkali_pump.set_state(1)
-                time.sleep(5)
+                time.sleep(15)
                 self.alkali_pump.set_state(0)
                 self.ph.state += 0.5
                 continue

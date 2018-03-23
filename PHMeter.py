@@ -1,13 +1,13 @@
 from random import random
 from threading import Thread
-#import mraa
+import mraa
 import time
 
 
 class PHMeter:
     def __init__(self, pin):
         self.state = 7.0
-        #self.sensor = mraa.Aio(pin)
+        self.sensor = mraa.Aio(pin)
         print("PH level sensor was initialised!")
         return
 
@@ -23,7 +23,8 @@ class PHMeter:
     def start_measurement(self):
         print("PH level measurement was started!")
         time.sleep(15)
-        #self.state = self.sensor.readFloat()
-        self.state = round(self.state + random(), 1)
+        self.state = round(self.sensor.readFloat(), 2)
+        # Debug:
+        #self.state = round(self.state + random(), 1)
         print("PH level is: {}".format(self.state))
         return

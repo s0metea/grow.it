@@ -1,23 +1,20 @@
 from threading import Thread
 import time
-#import mraa
+import mraa
 
 
 class Pump:
     def __init__(self, pump_name, pin):
         self.state = False
         self.pump_name = pump_name
-        #self.gpio = mraa.Gpio(pin)
-        #self.gpio.dir(mraa.DIR_OUT)
+        self.gpio = mraa.Gpio(pin)
+        self.gpio.dir(mraa.DIR_OUT)
         print("The pump \"{}\" was initialised.".format(pump_name))
         return
 
     # Turn the pump on
     def set_state(self, state):
-        if state == 1:
-            self.state = True
-        else:
-            self.state = False
+        self.state = state
         if self.state:
             Thread(target=self.run, args=()).start()
         return
@@ -31,8 +28,8 @@ class Pump:
         while self.state:
             print("The pump \"{}\" state is running.".format(self.pump_name))
             time.sleep(1)
-            #self.gpio.write(1)
-        # self.gpio.write(0)
+            self.gpio.write(1)
+        self.gpio.write(0)
         return
 
     def get_pump_name(self):

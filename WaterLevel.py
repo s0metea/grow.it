@@ -1,6 +1,6 @@
 from random import random
 from threading import Thread
-#import mraa
+import mraa
 import time
 
 class WaterLevel:
@@ -10,10 +10,9 @@ class WaterLevel:
         self.length = 200
         self.low = 0
         self.high = self.length
-        self.step = 1
-        #self.sensor = mraa.Aio(pin)
-        self.state = 0
-        #self.state = self.sensor.readFloat()
+        self.step = 0.1
+        self.sensor = mraa.Aio(pin)
+        self.state = self.sensor.readFloat(),
         print("Water level sensor was initialised!")
         return
 
@@ -29,6 +28,6 @@ class WaterLevel:
 
     def start_measurement(self):
         print("Water level measurement was started!")
-        # self.state = self.sensor.readFloat()
+        self.state = round(self.sensor.readFloat(), 2)
         print("Water level is: {}".format(self.state))
         return

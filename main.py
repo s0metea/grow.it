@@ -90,7 +90,8 @@ def monitor_all():
 def control():
     # Get the data:
     sensor = request.form['sensor']
-    state = int(request.form['state'])
+    state = request.form['state']
+    state = True if state == 'true' else False
     sensors_set[sensor](state)
     new_state = sensors_get[sensor]()
     return jsonify({'success': True, 'sensor': sensor, 'state': new_state}), 200, {'ContentType': 'application/json'}
@@ -120,4 +121,4 @@ def wrong_get_request():
 
 # Starts the app listening to port 5000 with debug mode
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="172.20.10.14", debug=True)
