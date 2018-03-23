@@ -1,6 +1,6 @@
 **Fertigation system**
 
-![](https://user-images.githubusercontent.com/5481968/37509806-f1d6fb7e-2909-11e8-97c9-1d7156e249a0.jpg)
+![](https://user-images.githubusercontent.com/5481968/37801326-452bcade-2e37-11e8-8a7a-658f2b93f794.jpg)
 
 **API:**
 
